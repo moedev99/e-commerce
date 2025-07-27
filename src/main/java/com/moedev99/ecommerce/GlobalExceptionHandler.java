@@ -2,6 +2,7 @@ package com.moedev99.ecommerce;
 
 import com.moedev99.ecommerce.exception.ErrorResponse;
 import com.moedev99.ecommerce.exception.FileValidityException;
+import com.moedev99.ecommerce.exception.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,8 +20,8 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({FileValidityException.class})
-    public ResponseEntity<Object> fileValidityException(RuntimeException e){
+    @ExceptionHandler({FileValidityException.class, ResourceNotFoundException.class})
+    public ResponseEntity<Object> CustomExceptionHandler(RuntimeException e){
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), List.of(e.getMessage()));
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

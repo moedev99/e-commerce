@@ -1,14 +1,19 @@
 package com.moedev99.ecommerce.service;
 
 import com.moedev99.ecommerce.dto.admin.ProductReq;
+import com.moedev99.ecommerce.dto.admin.UpdateProductReq;
 import com.moedev99.ecommerce.entity.Product;
 import com.moedev99.ecommerce.exception.FileValidityException;
+import com.moedev99.ecommerce.exception.ResourceNotFoundException;
 import com.moedev99.ecommerce.mapper.ProductMapper;
 import com.moedev99.ecommerce.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -40,5 +45,29 @@ public class AdminProductServiceImpl implements AdminProductService{
         if (contentType == null || !contentType.startsWith("image/")) {
             throw new FileValidityException("File must be an image");
         }
+    }
+
+    @Override
+    @Transactional
+    public Product updateProduct(UpdateProductReq updateProductReq, MultipartFile image) {
+        Product product = productRepository.findById(updateProductReq.id())
+                .orElseThrow(() -> new ResourceNotFoundException("Product Not found"));
+
+        if (image != null && !image.isEmpty()){
+            String newUrl = s3Service.updateImage(image, product.getUrl());
+            product.setUrl(newUrl);
+
+        }
+        product.setCategory(updateProductReq.category());
+        product.setName(updateProductReq.name());
+        product.setPrice(updateProductReq.price());
+        product.setDiscount(updateProductReq.discount());
+        product.setQuantityInStock(updateProductReq.quantityInStock());
+
+
+        Product updatedProduct = productRepository.save(product);
+        log.info("product updated Successfully");
+        return product;
+
     }
 }

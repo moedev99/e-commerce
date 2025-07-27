@@ -6,7 +6,8 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "PRODUCT")
 public class Product {
 
@@ -14,16 +15,26 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "CATEGORY")
-    private final String category;
+    private  String category;
     @Column(name = "NAME")
-    private final String name;
+    private  String name;
     @Column(name = "URL")
-    private final String url;
+    private  String url;
     @Column(name = "PRICE")
-    private final double price;
+    private double price;
     @Column(name = "DISCOUNT")
-    private final double discount;
+    private  double discount;
     @Column(name = "QUANTITY_IN_STOCK")
-    private final int quantityInStock;
+    private int quantityInStock;
+
+//    customer constructor
+public Product(String category, String name,String url, double price, double discount, int quantityInStock) {
+    this.category = category;
+    this.url = url;
+    this.name = name;
+    this.price = price;
+    this.discount = discount;
+    this.quantityInStock = quantityInStock;
+}
 
 }
