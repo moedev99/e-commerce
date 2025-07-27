@@ -27,10 +27,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         List<String> errors = new ArrayList<>();
-
         ex.getBindingResult().getAllErrors().forEach(err -> errors.add(err.getDefaultMessage()));
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), errors);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> globalHandleMethod(Exception e){
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponse(LocalDateTime.now(), List.of("An unexpected error occurred. Please try again later.")), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 }

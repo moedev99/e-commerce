@@ -1,16 +1,12 @@
 package com.moedev99.ecommerce.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "PRODUCT")
 public class Product {
 
@@ -18,16 +14,16 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "CATEGORY")
-    private String category;
+    private final String category;
     @Column(name = "NAME")
-    private String name;
+    private final String name;
     @Column(name = "URL")
-    private String url;
+    private final String url;
     @Column(name = "PRICE")
-    private double price;
+    private final double price;
     @Column(name = "DISCOUNT")
-    private double discount;
+    private final double discount;
     @Column(name = "QUANTITY_IN_STOCK")
-    private int quantityInStock;
+    private final int quantityInStock;
 
 }
