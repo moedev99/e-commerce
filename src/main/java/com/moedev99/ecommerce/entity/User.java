@@ -33,5 +33,10 @@ public class User {
     private List<Cart> carts;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
+    public User(String email, String username, String password){
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.moedev99.ecommerce;
 
+import com.moedev99.ecommerce.exception.EmailExistsException;
 import com.moedev99.ecommerce.exception.ErrorResponse;
 import com.moedev99.ecommerce.exception.FileValidityException;
 import com.moedev99.ecommerce.exception.ResourceNotFoundException;
@@ -20,7 +21,7 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({FileValidityException.class, ResourceNotFoundException.class})
+    @ExceptionHandler({FileValidityException.class, ResourceNotFoundException.class, EmailExistsException.class})
     public ResponseEntity<Object> CustomExceptionHandler(RuntimeException e){
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), List.of(e.getMessage()));
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
